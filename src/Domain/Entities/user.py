@@ -56,6 +56,16 @@ class User:
             "user_type": self.__user_type.get_value(),
         }
 
+    def deposit(self, value: float):
+        if value < 0:
+            raise ValueError("The value cannot be negative")
+        self.__amount += value
+
+    def transfer(self, value: float):
+        if value < 0 or self.get_amount() < value:
+            raise ValueError("It is not possible to transfer this amount")
+        self.__amount -= value
+
     def get_id(self) -> str:
         return self.__id
 
