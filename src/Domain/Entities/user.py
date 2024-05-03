@@ -41,6 +41,26 @@ class User:
             Name(name),
             Email(email),
             RegistrationNumber(registration_number),
+            Password.create(password),
+            Amount(amount_user),
+            UserType(user_type),
+        )
+
+    @staticmethod
+    def restore(
+        id: str,
+        name: str,
+        email: str,
+        registration_number: str,
+        password: str,
+        amount_user: float,
+        user_type: str,
+    ):
+        return User(
+            id,
+            Name(name),
+            Email(email),
+            RegistrationNumber(registration_number),
             Password(password),
             Amount(amount_user),
             UserType(user_type),
@@ -52,6 +72,7 @@ class User:
             "amount": self.__amount_user.get_value(),
             "name": self.__name.get_value(),
             "email": self.__email.get_value(),
+            "password": self.__password.get_value(),
             "registration_number": self.__registration_number.get_value(),
             "user_type": self.__user_type.get_value(),
         }
@@ -59,12 +80,22 @@ class User:
     def deposit(self, value: float):
         if value < 0:
             raise ValueError("The value cannot be negative")
-        self.__amount += value
+        amount = self.__amount_user.get_value()
+        amount += value
+        self.set_amount(amount)
+        return amount
 
     def transfer(self, value: float):
-        if value < 0 or self.get_amount() < value:
+        if value < 0 or self.__amount_user.get_value() <= value:
             raise ValueError("It is not possible to transfer this amount")
-        self.__amount -= value
+        amount = self.__amount_user.get_value()
+        amount -= value
+        self.set_amount(amount)
+        return amount
+
+    def set_amount(self, value):
+        self.__amount_user = value
+        return self.__amount_user
 
     def get_id(self) -> str:
         return self.__id
