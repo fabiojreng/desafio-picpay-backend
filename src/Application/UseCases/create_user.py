@@ -38,7 +38,18 @@ class CreateUserUseCase(UseCaseInterface):
                 params.get("user_type"),
             ).to_dict()
             self.__user_repository.save_user(user)
-            return created({"message": "User created successfully", "data": user})
+            return created(
+                {
+                    "message": "User created successfully",
+                    "data": {
+                        "id": user.get("id"),
+                        "name": user.get("name"),
+                        "email": user.get("email"),
+                        "user_type": user.get("user_type"),
+                        "amount": user.get("amount"),
+                    },
+                }
+            )
 
         except Exception as e:
             if isinstance(e, Exception):
