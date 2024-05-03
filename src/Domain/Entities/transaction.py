@@ -17,12 +17,16 @@ class Transaction:
 
     @staticmethod
     def create(payer: User, payee: User, value: str):
-        if payer.get_user_type() != "Common":
+        if payer["user_type"] != "Common":
             raise ValueError("Only common user can make transfer")
-        if payer.get_amount() < 0:
+        if payer["amount"] < 0:
             raise ValueError("No balance to transfer")
         id = uuid.uuid4()
 
+        return Transaction(id, payer, payee, value)
+
+    @staticmethod
+    def restore(id: str, payer: User, payee: User, value: str):
         return Transaction(id, payer, payee, value)
 
     def to_dict(self):
