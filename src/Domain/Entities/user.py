@@ -86,7 +86,7 @@ class User:
         return amount
 
     def transfer(self, value: float):
-        if value < 0 or self.__amount_user.get_value() <= value:
+        if value < 0 or self.__amount_user.get_value() < value:
             raise ValueError("It is not possible to transfer this amount")
         amount = self.__amount_user.get_value()
         amount -= value
@@ -96,6 +96,9 @@ class User:
     def set_amount(self, value):
         self.__amount_user = value
         return self.__amount_user
+
+    def validate_password(self, password: str):
+        return self.__password.validate(password)
 
     def get_id(self) -> str:
         return self.__id
