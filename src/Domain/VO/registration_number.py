@@ -8,9 +8,9 @@ class RegistrationNumber:
         )
 
     def __validate_registration_number(self, registration_number: str) -> str:
-        registration_number = registration_number.replace(" ", "")
+        registration_number = re.sub(r"\s|\D", "", registration_number)
         if not registration_number.isdigit():
-            raise ValueError("Only numeric values ​​can be entered")
+            raise ValueError("Only numeric values can be entered")
 
         if len(registration_number) == 11:
             registration_number = re.sub(
