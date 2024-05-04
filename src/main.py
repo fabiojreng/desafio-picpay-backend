@@ -13,7 +13,9 @@ from src.Infra.Controller.main_controller import MainController
 from src.Infra.Repository.MySQL.transaction_repository_mysql import (
     TransactionRepositoryMySQL,
 )
-from src.Application.UseCases.find_all_transactions import FindAllTransactions
+from src.Application.UseCases.find_all_transactions import FindAllTransactionsUseCase
+from src.Application.UseCases.find_transaction_by_id import FindTransactionByIdUseCase
+from src.Application.UseCases.find_user_by_id import FindUserByIdUseCase
 
 server = FlaskAdapter()
 connection = ConnectionMySql()
@@ -23,7 +25,17 @@ db_transaction = TransactionRepositoryMySQL(connection)
 create_user = CreateUserUseCase(db_user)
 deposit_amount = DepositAmountUseCase(db_user)
 transaction = CreateTransactionUseCase(db_transaction, db_user)
-find_all_transactions = FindAllTransactions(db_transaction)
+find_all_transactions = FindAllTransactionsUseCase(db_transaction)
+find_transaction_id = FindTransactionByIdUseCase(db_transaction)
+find_user_id = FindUserByIdUseCase(db_user)
 
-MainController(server, create_user, deposit_amount, transaction, find_all_transactions)
+MainController(
+    server,
+    create_user,
+    deposit_amount,
+    transaction,
+    find_all_transactions,
+    find_transaction_id,
+    find_user_id,
+)
 server.listen(3333)
