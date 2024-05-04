@@ -20,7 +20,7 @@ class CreateTransactionUseCase(UseCaseInterface):
         self.__transaction_repository = transaction_repository
         self.__user_repository = user_repository
 
-    def execute(self, params: any) -> HttpResponse:
+    def execute(self, params: any = None) -> HttpResponse:
         try:
             payer = self.__user_repository.find_by_registration_number(
                 params.get("registration_number_payer")

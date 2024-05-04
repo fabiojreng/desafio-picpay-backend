@@ -15,7 +15,7 @@ class DepositAmountUseCase(UseCaseInterface):
     def __init__(self, user_repository: UserRepositoryInterface) -> None:
         self.__user_repository = user_repository
 
-    def execute(self, params: any) -> HttpResponse:
+    def execute(self, params: any = None) -> HttpResponse:
         try:
             user = self.__user_repository.find_by_registration_number(
                 params.get("registration_number")

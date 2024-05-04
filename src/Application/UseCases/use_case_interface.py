@@ -4,5 +4,5 @@ from src.Domain.Helpers.http_helper import HttpResponse
 
 class UseCaseInterface(ABC):
     @abstractmethod
-    def execute(self, params: any) -> HttpResponse:
+    def execute(self, params: any = None) -> HttpResponse:
         pass
