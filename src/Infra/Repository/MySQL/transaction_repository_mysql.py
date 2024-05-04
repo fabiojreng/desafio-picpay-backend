@@ -43,4 +43,16 @@ class TransactionRepositoryMySQL(TransactionRepositoryInterface):
         return output
 
     def find_all_transactions(self) -> list[dict]:
-        return super().find_all_transactions()
+        self.__mysql.connect()
+        transactions = self.__mysql.query("SELECT * FROM transactions")
+        self.__mysql.close()
+        output = [
+            {
+                "transaction_id": transaction[0],
+                "payer": transaction[1],
+                "payee": transaction[2],
+                "value": transaction[3],
+            }
+            for transaction in transactions
+        ]
+        return output
