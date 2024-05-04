@@ -37,14 +37,15 @@ class CreateTransactionUseCase(UseCaseInterface):
                 payer.to_dict(), payee.to_dict(), params.get("value")
             ).to_dict()
 
-            amount_payee = payee.deposit(params.get("value"))
             amount_payer = payer.transfer(params.get("value"))
+            amount_payee = payee.deposit(params.get("value"))
+
+            self.__user_repository.update_amount(
+                amount_payer, params.get("registration_number_payer")
+            )
 
             self.__user_repository.update_amount(
                 amount_payee, params.get("registration_number_payee")
-            )
-            self.__user_repository.update_amount(
-                amount_payer, params.get("registration_number_payer")
             )
             self.__transaction_repository.save_transaction(transaction)
 
