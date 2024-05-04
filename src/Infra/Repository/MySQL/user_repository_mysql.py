@@ -87,30 +87,3 @@ class UserRepositoryMySQL(UserRepositoryInterface):
             [value, registration_number],
         )
         self.__mysql.close()
-
-    def find_by_id(self, id: str) -> User:
-        self.__mysql.connect()
-        user = self.__mysql.query("SELECT * FROM users WHERE id = %s", [id])
-        if not user:
-            return None
-        (
-            user_id,
-            user_name,
-            user_email,
-            user_registration_number,
-            user_type,
-            user_password,
-            user_amount,
-        ) = user[0]
-
-        output = User.restore(
-            user_id,
-            user_name,
-            user_email,
-            user_registration_number,
-            user_password,
-            float(user_amount),
-            user_type,
-        )
-        self.__mysql.close()
-        return output
