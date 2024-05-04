@@ -67,3 +67,7 @@ def forbidden(error: Exception) -> HttpResponse:
             "error": {"message": error},
         },
     ).to_dict()
+
+
+def no_content() -> HttpResponse:
+    return HttpResponse(status_code=202, body=None).to_dict()
