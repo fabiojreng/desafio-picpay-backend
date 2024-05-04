@@ -9,7 +9,7 @@ class TransactionRepositoryInterface(ABC):
         pass
 
     @abstractmethod
-    def find_transaction_id(self, id: str) -> list:
+    def find_transaction_id(self, id: str) -> Transaction:
         pass
 
     @abstractmethod

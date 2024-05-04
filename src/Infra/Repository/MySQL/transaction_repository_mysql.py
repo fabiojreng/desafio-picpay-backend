@@ -20,7 +20,7 @@ class TransactionRepositoryMySQL(TransactionRepositoryInterface):
         )
         self.__mysql.close()
 
-    def find_transaction_id(self, id: str) -> list:
+    def find_transaction_id(self, id: str) -> Transaction:
         self.__mysql.connect()
         transaction = self.__mysql.query(
             "SELECT * FROM transactions WHERE id = %s", [id]
