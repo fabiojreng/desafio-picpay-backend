@@ -1,10 +1,12 @@
 from flask import Flask, request, json, Response
+from flask_cors import CORS
 from src.Infra.Http.interface_server_http import HttpServer
 
 
 class FlaskAdapter(HttpServer):
     def __init__(self) -> None:
         self.__app = Flask(__name__)
+        CORS(self.__app)
 
     def register(self, method, url, callback):
         view_name = f"{method.lower()}_{url.replace('/', '_')}_callback"
@@ -15,7 +17,7 @@ class FlaskAdapter(HttpServer):
                     if request.view_args:
                         output = callback(request.view_args)
                     else:
-                        output = callback(*args, **kwargs)
+                        output = callback()
 
                 else:
                     output = callback(request.json)
