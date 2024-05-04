@@ -19,3 +19,7 @@ class UserRepositoryInterface(ABC):
     @abstractmethod
     def update_amount(self, value: float, registration_number: str) -> None:
         pass
+
+    @abstractmethod
+    def find_by_id(self, id: str) -> User:
+        pass
