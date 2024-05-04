@@ -8,7 +8,7 @@ from src.Domain.Helpers.http_helper import (
 from src.Domain.Repository.transaction_repository import TransactionRepositoryInterface
 
 
-class FindAllTransactions(UseCaseInterface):
+class FindAllTransactionsUseCase(UseCaseInterface):
     def __init__(self, transaction_repository: TransactionRepositoryInterface) -> None:
         self.__transaction_repository = transaction_repository
 
