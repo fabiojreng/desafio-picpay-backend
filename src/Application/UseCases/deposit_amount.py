@@ -2,7 +2,6 @@ from src.Application.UseCases.use_case_interface import UseCaseInterface
 from src.Domain.Entities.user import User
 from src.Domain.Helpers.http_helper import (
     HttpResponse,
-    forbidden,
     not_found,
     success,
     unprocessable_entity,
