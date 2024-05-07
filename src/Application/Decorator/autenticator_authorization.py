@@ -10,7 +10,6 @@ class AutenticatorAuthorizationDecorator(AuthorizationDecoratorInterface):
     def execute(self) -> HttpResponse:
         try:
             response = self.__authorization_gateway.authorization()
-            print(response)
             if response["data"]["message"] == "Autorizado":
                 return {"status": "Authorized", "data": ""}
             return {"status": "Denied", "data": ""}
