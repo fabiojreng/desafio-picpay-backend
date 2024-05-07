@@ -1,10 +1,12 @@
 from src.Application.UseCases.use_case_interface import UseCaseInterface
+from src.Domain.Decorator.authorization import AuthorizationDecoratorInterface
 from src.Domain.Entities.transaction import Transaction
 from src.Domain.Helpers.http_helper import (
     HttpResponse,
     created,
     not_found,
     server_error,
+    unauthorized,
     unprocessable_entity,
 )
 from src.Domain.Repository.transaction_repository import TransactionRepositoryInterface
@@ -16,9 +18,11 @@ class CreateTransactionUseCase(UseCaseInterface):
         self,
         transaction_repository: TransactionRepositoryInterface,
         user_repository: UserRepositoryInterface,
+        authorization: AuthorizationDecoratorInterface,
     ) -> None:
         self.__transaction_repository = transaction_repository
         self.__user_repository = user_repository
+        self.__authorization = authorization
 
     def execute(self, params: any = None) -> HttpResponse:
         try:
@@ -32,6 +36,10 @@ class CreateTransactionUseCase(UseCaseInterface):
             )
             if not payee:
                 return not_found("Payee not found")
+
+            authorization = self.__authorization.execute()
+            if authorization["status"] != "Authorized":
+                return unauthorized("Transaction unauthorized")
 
             transaction = Transaction.create(
                 payer.to_dict(), payee.to_dict(), params.get("value")
