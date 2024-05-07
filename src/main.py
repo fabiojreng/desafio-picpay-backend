@@ -1,6 +1,5 @@
 import os, sys
 
-
 sys.path.insert(0, os.path.abspath(os.curdir))
 
 from src.Application.UseCases.create_transaction import CreateTransactionUseCase
@@ -16,15 +15,24 @@ from src.Infra.Repository.MySQL.transaction_repository_mysql import (
 from src.Application.UseCases.find_all_transactions import FindAllTransactionsUseCase
 from src.Application.UseCases.find_transaction_by_id import FindTransactionByIdUseCase
 from src.Application.UseCases.find_user_by_id import FindUserByIdUseCase
+from src.Application.Decorator.autenticator_authorization import (
+    AutenticatorAuthorizationDecorator,
+)
+from src.Infra.Gateway.authotization_gateway import AuthorizationGateway
+from src.Infra.Http.request_client import RequestHttpClient
+
 
 server = FlaskAdapter()
 connection = ConnectionMySql()
 db_user = UserRepositoryMySQL(connection)
 db_transaction = TransactionRepositoryMySQL(connection)
+http_client = RequestHttpClient()
+authorization_gateway = AuthorizationGateway(http_client)
+authorization_decorator = AutenticatorAuthorizationDecorator(authorization_gateway)
 
 create_user = CreateUserUseCase(db_user)
 deposit_amount = DepositAmountUseCase(db_user)
-transaction = CreateTransactionUseCase(db_transaction, db_user)
+transaction = CreateTransactionUseCase(db_transaction, db_user, authorization_decorator)
 find_all_transactions = FindAllTransactionsUseCase(db_transaction)
 find_transaction_id = FindTransactionByIdUseCase(db_transaction)
 find_user_id = FindUserByIdUseCase(db_user)
