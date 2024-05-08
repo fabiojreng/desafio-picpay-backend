@@ -34,7 +34,7 @@ authorization_decorator = AutenticatorAuthorizationDecorator(
 email_sender = EmailSenderGateway(http_client)
 
 create_user = CreateUserUseCase(db_user)
-deposit_amount = DepositAmountUseCase(db_user)
+deposit_amount = DepositAmountUseCase(db_user, authorization_decorator)
 transaction = CreateTransactionUseCase(
     db_transaction, db_user, authorization_decorator, email_sender
 )
