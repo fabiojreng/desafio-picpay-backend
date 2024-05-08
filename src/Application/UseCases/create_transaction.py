@@ -1,6 +1,7 @@
 from src.Application.UseCases.use_case_interface import UseCaseInterface
 from src.Domain.Decorator.authorization import AuthorizationDecoratorInterface
 from src.Domain.Entities.transaction import Transaction
+from src.Domain.Gateway.email_sender_gateway import EmailSenderGatewayInterface
 from src.Domain.Helpers.http_helper import (
     HttpResponse,
     created,
@@ -19,10 +20,12 @@ class CreateTransactionUseCase(UseCaseInterface):
         transaction_repository: TransactionRepositoryInterface,
         user_repository: UserRepositoryInterface,
         authorization: AuthorizationDecoratorInterface,
+        email_sender: EmailSenderGatewayInterface,
     ) -> None:
         self.__transaction_repository = transaction_repository
         self.__user_repository = user_repository
         self.__authorization = authorization
+        self.__email_sender = email_sender
 
     def execute(self, params: any = None) -> HttpResponse:
         try:
@@ -45,6 +48,7 @@ class CreateTransactionUseCase(UseCaseInterface):
                 payer.to_dict(), payee.to_dict(), params.get("value")
             ).to_dict()
 
+            print(transaction)
             amount_payer = payer.transfer(params.get("value"))
             amount_payee = payee.deposit(params.get("value"))
 
@@ -56,6 +60,8 @@ class CreateTransactionUseCase(UseCaseInterface):
                 amount_payee, params.get("registration_number_payee")
             )
             self.__transaction_repository.save_transaction(transaction)
+
+            self.__email_sender.sender(payee, payer, params.get("value"))
 
             return created(
                 {
