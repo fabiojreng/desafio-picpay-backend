@@ -20,6 +20,7 @@ from src.Application.Decorator.autenticator_authorization import (
 )
 from src.Infra.Gateway.authotization_gateway import AuthorizationGateway
 from src.Infra.Http.request_client import RequestHttpClient
+from src.Infra.Gateway.email_sender_gateway import EmailSenderGateway
 
 
 server = FlaskAdapter()
@@ -27,12 +28,16 @@ connection = ConnectionMySql()
 db_user = UserRepositoryMySQL(connection)
 db_transaction = TransactionRepositoryMySQL(connection)
 http_client = RequestHttpClient()
-authorization_gateway = AuthorizationGateway(http_client)
-authorization_decorator = AutenticatorAuthorizationDecorator(authorization_gateway)
+authorization_decorator = AutenticatorAuthorizationDecorator(
+    AuthorizationGateway(http_client)
+)
+email_sender = EmailSenderGateway(http_client)
 
 create_user = CreateUserUseCase(db_user)
 deposit_amount = DepositAmountUseCase(db_user)
-transaction = CreateTransactionUseCase(db_transaction, db_user, authorization_decorator)
+transaction = CreateTransactionUseCase(
+    db_transaction, db_user, authorization_decorator, email_sender
+)
 find_all_transactions = FindAllTransactionsUseCase(db_transaction)
 find_transaction_id = FindTransactionByIdUseCase(db_transaction)
 find_user_id = FindUserByIdUseCase(db_user)
