@@ -104,16 +104,16 @@ class User:
         return self.__id
 
     def get_amount(self) -> float:
-        return self.__amount_user
+        return self.__amount_user.get_value()
 
     def get_name(self) -> str:
-        return self.__name
+        return self.__name.get_value()
 
     def get_email(self) -> str:
-        return self.__email
+        return self.__email.get_value()
 
     def get_registration_number(self) -> str:
-        return self.__registration_number
+        return self.__registration_number.get_value()
 
     def get_user_type(self) -> str:
-        return self.__user_type
+        return self.__user_type.get_value()
