@@ -48,7 +48,6 @@ class CreateTransactionUseCase(UseCaseInterface):
                 payer.to_dict(), payee.to_dict(), params.get("value")
             ).to_dict()
 
-            print(transaction)
             amount_payer = payer.transfer(params.get("value"))
             amount_payee = payee.deposit(params.get("value"))
 
