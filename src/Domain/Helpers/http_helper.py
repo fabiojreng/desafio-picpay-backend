@@ -1,5 +1,8 @@
+from typing import Any
+
+
 class HttpResponse:
-    def __init__(self, status_code: int, body: dict[str, any] = None):
+    def __init__(self, status_code: int, body: dict[str, Any] = None):
         self.status_code = status_code
         self.body = body
 
@@ -17,7 +20,7 @@ def server_error(error: Exception) -> HttpResponse:
     ).to_dict()
 
 
-def success(data: dict[str, any]) -> HttpResponse:
+def success(data: dict[str, Any]) -> HttpResponse:
     return HttpResponse(
         status_code=200,
         body={
@@ -28,7 +31,7 @@ def success(data: dict[str, any]) -> HttpResponse:
     ).to_dict()
 
 
-def created(data: dict[str, any]) -> HttpResponse:
+def created(data: dict[str, Any]) -> HttpResponse:
     return HttpResponse(
         status_code=201,
         body={
